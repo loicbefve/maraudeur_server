@@ -63,12 +63,17 @@ router.post('/user',(req,res)=>{
   // rajouter ce user à la base de données
 });
 
-router.update('/user:id',(req,res)=>{
+router.put('/user:id',(req,res)=>{
   // mettre à jour la position de cet id
 });
 
 router.delete('/user',(req,res)=>{
   //supprimer ce user de la DB
 });*/
+
+
+router.get('/admin',(req,res)=>{
+  res.render('index', { title: 'the marauder webpage' });
+})
 
 module.exports = router;
