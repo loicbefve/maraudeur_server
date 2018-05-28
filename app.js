@@ -49,4 +49,4 @@ var mySqlClient = mysql.createConnection({
 });
 
 
-module.exports = app;
+module.exports = app, mySqlClient;

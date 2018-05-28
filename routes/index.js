@@ -1,8 +1,10 @@
-const form = require('express-form');
-const field = form.field;
 
 let express = require('express');
 let router = express.Router();
+
+let bodyParser = require('body-parser'),
+    form = require('express-form'),
+    field = form.field;
 
 /* Client page. */
 router.get('/client', (req, res) => {
@@ -12,8 +14,8 @@ router.get('/client', (req, res) => {
 router.post(
     '/client',
     form(
-        field("latitude").trim().required().isNumber,
-        field("longitude").trim().required().isNumber,
+        field("latitude").required().is(/^[0-9]+.?[0-9]*/),
+        field("longitude").required().is(/^[0-9]+.?[0-9]*/),
     ),
     (req, res) => {
 
@@ -23,14 +25,14 @@ router.post(
 
         } else {
             // Or, use filtered form data from the form object:
-            console.log("Username:", req.form.username);
-            console.log("Password:", req.form.password);
-            console.log("Email:", req.form.email);
+            console.log("Latitude:", req.form.latitude);
+            console.log("Longitude:", req.form.longitude);
+
+
         }
         res.render('index', {title:"test ça"});
-});
-
-
+    }
+);
 
 
 /*router.get('/user',(req,res)=>{
