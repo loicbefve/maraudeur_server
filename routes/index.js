@@ -1,20 +1,47 @@
-var express = require('express');
-var router = express.Router();
+const form = require('express-form');
+const field = form.field;
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+let express = require('express');
+let router = express.Router();
+
+/* Client page. */
+router.get('/client', (req, res) => {
+  res.render('client', { title: 'Client' });
 });
 
-router.get('/user',(req,res)=>{
+router.post(
+    '/client',
+    form(
+        field("latitude").trim().required().isNumber,
+        field("longitude").trim().required().isNumber,
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            // Or, use filtered form data from the form object:
+            console.log("Username:", req.form.username);
+            console.log("Password:", req.form.password);
+            console.log("Email:", req.form.email);
+        }
+        res.render('index', {title:"test ça"});
+});
+
+
+
+
+/*router.get('/user',(req,res)=>{
   // aller chercher data dans la base de donnée
   data={
-    /*
+
     {
       user1:coordonnée
       user2:coordonnée
     }
-   */
+
   }
   res.send(data);
 });
@@ -22,11 +49,11 @@ router.get('/user',(req,res)=>{
 router.get('/user:id',(req,res)=>{
   // aller chercher data dans la base de donnée
   data={
-    /*
+
     {
       user1:coordonnée
     }
-   */
+
   }
   res.send(data);
 
@@ -42,6 +69,6 @@ router.update('/user:id',(req,res)=>{
 
 router.delete('/user',(req,res)=>{
   //supprimer ce user de la DB
-});
+});*/
 
 module.exports = router;
