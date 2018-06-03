@@ -41,7 +41,7 @@ router.post(
 
 router.get('/user',(req,res)=>{
   // aller chercher data dans la base de donnée
-  const myPostGreSQLClient = new Client({
+  const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
   });
