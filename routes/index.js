@@ -40,10 +40,10 @@ router.get('/utilisateurs',(req,res)=>{
   // aller chercher data dans la base de donnée
   client.connect();
 
-  client.query('SELECT * FROM users;', (err, res) => {
+  client.query('SELECT * FROM users;', (err, datares) => {
     if (err) throw err;
     var str='';
-    for (let row of res.rows) {
+    for (let row of datares.rows) {
       console.log(JSON.stringify(row));
       str=str+JSON.stringify(row);
     }
