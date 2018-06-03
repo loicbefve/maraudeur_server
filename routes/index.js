@@ -40,7 +40,7 @@ router.get('/utilisateurs',(req,res)=>{
   // aller chercher data dans la base de donnée
   client.connect();
 
-  client.query('CREATE DATABASE user', (err, res) => {
+  client.query('SELECT * FROM users;', (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
       console.log(JSON.stringify(row));
