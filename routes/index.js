@@ -1,7 +1,10 @@
 
 let express = require('express');
 let router = express.Router();
-let client = require('../db/myPostGreSQLClient');
+const { Client } = require('pg');
+
+
+
 
 let bodyParser = require('body-parser'),
     form = require('express-form'),
@@ -38,9 +41,13 @@ router.post(
 
 router.get('/utilisateurs',(req,res)=>{
   // aller chercher data dans la base de donnée
+  const myPostGreSQLClient = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+  });
   client.connect();
 
-  client.query('CREATE DATABASE user', (err, res) => {
+  client.query('SELECT * FROM user', (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
       console.log(JSON.stringify(row));
