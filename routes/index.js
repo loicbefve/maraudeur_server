@@ -42,9 +42,12 @@ router.get('/utilisateurs',(req,res)=>{
 
   client.query('SELECT * FROM users;', (err, res) => {
     if (err) throw err;
+    var str='';
     for (let row of res.rows) {
       console.log(JSON.stringify(row));
+      str=str+JSON.stringify(row);
     }
+    res.render('index', {title:str});
     client.end();
   });
   console.log("hey");
