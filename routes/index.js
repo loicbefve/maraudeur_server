@@ -39,7 +39,7 @@ router.post(
 );
 
 
-router.get('/utilisateurs',(req,res)=>{
+router.get('/user',(req,res)=>{
   // aller chercher data dans la base de donnée
   const myPostGreSQLClient = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -49,9 +49,12 @@ router.get('/utilisateurs',(req,res)=>{
 
   client.query('SELECT * FROM user', (err, res) => {
     if (err) throw err;
-    for (let row of res.rows) {
+    var str='';
+    for (let row of datares.rows) {
       console.log(JSON.stringify(row));
+      str=str+JSON.stringify(row);
     }
+    res.render('index', {title:str});
     client.end();
   });
   console.log("hey");
