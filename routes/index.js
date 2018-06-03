@@ -47,7 +47,7 @@ router.get('/user',(req,res)=>{
   });
   client.connect();
 
-  client.query('SELECT * FROM user', (err, datares) => {
+  client.query('SELECT * FROM users', (err, datares) => {
     if (err) throw err;
     var str='';
     for (let row of datares.rows) {
