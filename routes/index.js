@@ -15,6 +15,10 @@ router.get('/client', (req, res) => {
   res.render('client', { title: 'Client' });
 });
 
+router.get('/signin', (req, res) => {
+  res.render('signin', { title: 'signin' });
+});
+
 router.post(
     '/client',
     form(
@@ -35,6 +39,35 @@ router.post(
 
         }
         res.render('index', {title:"test ça"});
+    }
+);
+
+router.post(
+    '/signin',
+    form(
+        field("name").required(),
+        field("surname").required(),
+        field("username").required(),
+        field("type").required(),
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            // Or, use filtered form data from the form object:
+            console.log("name:", req.form.name);
+            console.log("surname:", req.form.surname);
+            console.log("username:", req.form.username);
+            console.log("type:", req.form.type);
+            // TODO insérer le nouveau user dans la bdd
+            // TODO gérer le cas où username est déjà utilisé
+
+
+        }
+        res.render('index', {title:"signin ok"});
     }
 );
 
