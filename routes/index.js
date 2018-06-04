@@ -1,16 +1,20 @@
 
 let express = require('express');
 let router = express.Router();
+
 const db = require('../db/myPostGreSQLClient');
 
 let form = require('express-form'),
     field = form.field;
 
 /* Client page. */
+
+    /* -- GET --*/
 router.get('/client', (req, res) => {
   res.render('client', { title: 'Client' });
 });
 
+    /* -- POST --*/
 router.post(
     '/client',
     form(
@@ -31,25 +35,129 @@ router.post(
 
         }
         res.render('index', {title:"test ça"});
-    }
-);
+    });
 
 
-router.get('/user',(req,res)=>{
-  // aller chercher data dans la base de donné
+/* Signin page. */
 
-  db.query('SELECT * FROM users', (err, datares) => {
-    if (err) throw err;
-    var str='';
-    for (let row of datares.rows) {
-      console.log(JSON.stringify(row));
-      str=str+JSON.stringify(row);
-    }
-    res.render('index', {title:str});
-  });
-  console.log("hey");
+    /* -- GET --*/
 
+router.get('/signin', (req, res) => {
+  res.render('signin', { title: 'signin' });
 });
+
+    /* -- POST --*/
+router.post(
+    '/signin',
+    form(
+        field("name").required(),
+        field("surname").required(),
+        field("username").required(),
+        field("type").required(),
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            // Or, use filtered form data from the form object:
+            console.log("name:", req.form.name);
+            console.log("surname:", req.form.surname);
+            console.log("username:", req.form.username);
+            console.log("type:", req.form.type);
+            // TODO insérer le nouveau user dans la bdd
+            // TODO gérer le cas où username est déjà utilisé
+
+
+        }
+        res.render('index', {title:"signin ok"});
+    });
+
+/* update-id page. */
+
+    /* -- GET --*/
+
+router.get('/update_id', (req, res) => {
+  res.render('update_id', { title: 'update_id' });
+});
+
+    /* -- POST --*/
+
+router.post(
+    '/update_id',
+    form(
+        field("id").required(),
+        field("latitude").required(),
+        field("longitude").required()
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            console.log("latitude:", req.form.latitude);
+            console.log("longitude:", req.form.longitude);
+            // TODO update la position du user
+
+
+        }
+        res.render('index', {title:"update ok"});
+    });
+
+/* update-username page. */
+
+    /* -- GET --*/
+
+router.get('/update_username', (req, res) => {
+  res.render('update_username', { title: 'update_username' });
+});
+
+    /* -- POST --*/
+
+router.post(
+    '/update_username',
+    form(
+        field("username").required(),
+        field("latitude").required(),
+        field("longitude").required()
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            // Or, use filtered form data from the form object:
+            console.log("username:", req.form.username);
+            console.log("latitude:", req.form.latitude);
+            console.log("longitude:", req.form.longitude);
+            // TODO update la position du user
+
+
+        }
+        res.render('index', {title:"update ok"});
+    });
+
+
+
+
+router.get('/user',(req,res)=> {
+    // aller chercher data dans la base de donné
+
+    db.query('SELECT * FROM users', (err, datares) => {
+        if (err) throw err;
+        var str = '';
+        for (let row of datares.rows) {
+            console.log(JSON.stringify(row));
+            str = str + JSON.stringify(row);
+        }
+    });
+}
 
 
 /*
