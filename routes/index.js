@@ -19,6 +19,14 @@ router.get('/signin', (req, res) => {
   res.render('signin', { title: 'signin' });
 });
 
+router.get('/update_id', (req, res) => {
+  res.render('update_id', { title: 'update_id' });
+});
+
+router.get('/update_username', (req, res) => {
+  res.render('update_username', { title: 'update_username' });
+});
+
 router.post(
     '/client',
     form(
@@ -71,6 +79,58 @@ router.post(
     }
 );
 
+router.post(
+    '/update_id',
+    form(
+        field("id").required(),
+        field("latitude").required(),
+        field("longitude").required()
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            // Or, use filtered form data from the form object:
+            console.log("id:", req.form.id);
+            console.log("latitude:", req.form.latitude);
+            console.log("longitude:", req.form.longitude);
+            // TODO update la position du user
+
+
+        }
+        res.render('index', {title:"update ok"});
+    }
+);
+
+
+router.post(
+    '/update_username',
+    form(
+        field("username").required(),
+        field("latitude").required(),
+        field("longitude").required()
+    ),
+    (req, res) => {
+
+        if (!req.form.isValid) {
+            // Handle errors
+            console.log(req.form.errors);
+
+        } else {
+            // Or, use filtered form data from the form object:
+            console.log("username:", req.form.username);
+            console.log("latitude:", req.form.latitude);
+            console.log("longitude:", req.form.longitude);
+            // TODO update la position du user
+
+
+        }
+        res.render('index', {title:"update ok"});
+    }
+);
 
 router.get('/user',(req,res)=>{
   // aller chercher data dans la base de donnée
