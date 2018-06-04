@@ -1,9 +1,17 @@
-const { Client } = require('pg');
+const { Pool } = require('pg');
 
-const myPostGreSQLClient = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-});
+const pool = new Pool(
+    {
+        user: 'maraudeur',
+        host: 'localhost',
+        database: 'maraudeurdb',
+        password: 'depinfonancy',
+        port: 5432,
+    }
+);
 
-
-module.exports = myPostGreSQLClient;
+module.exports = {
+    query: (text, params, callback) => {
+        return pool.query(text, params, callback)
+    }
+};

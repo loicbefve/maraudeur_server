@@ -1,10 +1,9 @@
 
 let express = require('express');
 let router = express.Router();
-let client = require('../db/myPostGreSQLClient');
+const db = require('../db/myPostGreSQLClient');
 
-let bodyParser = require('body-parser'),
-    form = require('express-form'),
+let form = require('express-form'),
     field = form.field;
 
 /* Client page. */
@@ -37,28 +36,19 @@ router.post(
 
 
 router.get('/user',(req,res)=>{
-  // aller chercher data dans la base de donnée
-  client.connect();
+  // aller chercher data dans la base de donné
 
-  client.query('SELECT * FROM user;', (err, res) => {
+  db.query('SELECT * FROM users', (err, datares) => {
     if (err) throw err;
-    for (let row of res.rows) {
+    var str='';
+    for (let row of datares.rows) {
       console.log(JSON.stringify(row));
+      str=str+JSON.stringify(row);
     }
-    client.end();
+    res.render('index', {title:str});
   });
+  console.log("hey");
 
-  /*
-  data={
-
-    {
-      user1:coordonnée
-      user2:coordonnée
-    }
-
-  }
-  res.send(data);
-  */
 });
 
 
@@ -92,6 +82,6 @@ router.delete('/user',(req,res)=>{
 
 router.get('/admin',(req,res)=>{
   res.render('index', { title: 'the marauder webpage' });
-})
+});
 
 module.exports = router;
