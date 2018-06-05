@@ -99,9 +99,16 @@ router.post(
             console.log(req.form.errors);
 
         } else {
+            console.log("id:", req.form.id);
             console.log("latitude:", req.form.latitude);
             console.log("longitude:", req.form.longitude);
-            // TODO update la position du user
+            var id=req.form.id;
+            var lat=req.form.latitude;
+            var long=req.form.longitude;
+            db.query('UPDATE users SET long = $1, lat = $2 WHERE id_user = $3', [long,lat,id],(err, datares) => {
+                if (err) throw err;
+                res.render('index', {title:"update ok"});
+            });
 
 
         }
