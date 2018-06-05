@@ -130,17 +130,21 @@ router.post(
         if (!req.form.isValid) {
             // Handle errors
             console.log(req.form.errors);
+            res.send(err);
 
         } else {
             // Or, use filtered form data from the form object:
             console.log("username:", req.form.username);
             console.log("latitude:", req.form.latitude);
             console.log("longitude:", req.form.longitude);
-            // TODO update la position du user
-
-
+            var longitude = req.form.longitude;
+            var latitude = req.form.latitude;
+            var username = req.form.username;
+            db.query('UPDATE users SET long = $1, lat = $2 WHERE username = $3', [longitude,latitude,username],(err, datares) => {
+                if (err) throw err;
+                res.render('index', {title:"update ok"});
+            });
         }
-        res.render('index', {title:"update ok"});
     });
 
 
@@ -152,6 +156,7 @@ router.get('/user',(req,res)=> {
     db.query('SELECT * FROM users', (err, datares) => {
         if (err) throw err;
         var str = '';
+        res.writeHead(200, {'content-type':'application/json', 'content-length':Buffer.byteLength(json)});
         for (let row of datares.rows) {
             console.log(JSON.stringify(row));
             str = str + JSON.stringify(row);
