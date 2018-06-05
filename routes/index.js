@@ -156,7 +156,6 @@ router.get('/user',(req,res)=> {
     db.query('SELECT * FROM users', (err, datares) => {
         if (err) throw err;
         var str = '';
-        res.writeHead(200, {'content-type':'application/json', 'content-length':Buffer.byteLength(json)});
         for (let row of datares.rows) {
             console.log(JSON.stringify(row));
             str = str + JSON.stringify(row);
