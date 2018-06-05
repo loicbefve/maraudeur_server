@@ -155,7 +155,9 @@ router.get('/user',(req,res)=> {
         for (let row of datares.rows) {
             console.log(JSON.stringify(row));
             str = str + JSON.stringify(row);
+            res.write(JSON.stringify(row));
         }
+    res.send();
     });
 })
 
