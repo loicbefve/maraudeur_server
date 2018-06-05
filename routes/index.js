@@ -1,32 +1,20 @@
 
 let express = require('express');
 let router = express.Router();
-const { Client } = require('pg');
 
+const db = require('../db/myPostGreSQLClient');
 
-
-
-let bodyParser = require('body-parser'),
-    form = require('express-form'),
+let form = require('express-form'),
     field = form.field;
 
 /* Client page. */
+
+    /* -- GET --*/
 router.get('/client', (req, res) => {
   res.render('client', { title: 'Client' });
 });
 
-router.get('/signin', (req, res) => {
-  res.render('signin', { title: 'signin' });
-});
-
-router.get('/update_id', (req, res) => {
-  res.render('update_id', { title: 'update_id' });
-});
-
-router.get('/update_username', (req, res) => {
-  res.render('update_username', { title: 'update_username' });
-});
-
+    /* -- POST --*/
 router.post(
     '/client',
     form(
@@ -47,9 +35,18 @@ router.post(
 
         }
         res.render('index', {title:"test ça"});
-    }
-);
+    });
 
+
+/* Signin page. */
+
+    /* -- GET --*/
+
+router.get('/signin', (req, res) => {
+  res.render('signin', { title: 'signin' });
+});
+
+    /* -- POST --*/
 router.post(
     '/signin',
     form(
@@ -76,8 +73,17 @@ router.post(
 
         }
         res.render('index', {title:"signin ok"});
-    }
-);
+    });
+
+/* update-id page. */
+
+    /* -- GET --*/
+
+router.get('/update_id', (req, res) => {
+  res.render('update_id', { title: 'update_id' });
+});
+
+    /* -- POST --*/
 
 router.post(
     '/update_id',
@@ -93,8 +99,6 @@ router.post(
             console.log(req.form.errors);
 
         } else {
-            // Or, use filtered form data from the form object:
-            console.log("id:", req.form.id);
             console.log("latitude:", req.form.latitude);
             console.log("longitude:", req.form.longitude);
             // TODO update la position du user
@@ -102,9 +106,17 @@ router.post(
 
         }
         res.render('index', {title:"update ok"});
-    }
-);
+    });
 
+/* update-username page. */
+
+    /* -- GET --*/
+
+router.get('/update_username', (req, res) => {
+  res.render('update_username', { title: 'update_username' });
+});
+
+    /* -- POST --*/
 
 router.post(
     '/update_username',
@@ -129,42 +141,23 @@ router.post(
 
         }
         res.render('index', {title:"update ok"});
-    }
-);
+    });
 
-router.get('/user',(req,res)=>{
-  // aller chercher data dans la base de donnée
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  });
-  client.connect();
 
-  client.query('SELECT * FROM users', (err, datares) => {
-    if (err) throw err;
-    var str='';
-    for (let row of datares.rows) {
-      console.log(JSON.stringify(row));
-      str=str+JSON.stringify(row);
-      res.write(JSON.stringify(row));
-    }
-    res.send()
-    client.end();
-  });
-  console.log("hey");
 
-  /*
-  data={
 
-    {
-      user1:coordonnée
-      user2:coordonnée
-    }
+router.get('/user',(req,res)=> {
+    // aller chercher data dans la base de donné
 
-  }
-  res.send(data);
-  */
-});
+    db.query('SELECT * FROM users', (err, datares) => {
+        if (err) throw err;
+        var str = '';
+        for (let row of datares.rows) {
+            console.log(JSON.stringify(row));
+            str = str + JSON.stringify(row);
+        }
+    });
+}
 
 
 /*
@@ -197,6 +190,6 @@ router.delete('/user',(req,res)=>{
 
 router.get('/admin',(req,res)=>{
   res.render('index', { title: 'the marauder webpage' });
-})
+});
 
 module.exports = router;
