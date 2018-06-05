@@ -157,7 +157,7 @@ router.get('/user',(req,res)=> {
             str = str + JSON.stringify(row);
         }
     });
-}
+})
 
 
 /*
