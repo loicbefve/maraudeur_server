@@ -109,10 +109,7 @@ router.post(
                 if (err) throw err;
                 res.render('index', {title:"update ok"});
             });
-
-
         }
-        res.render('index', {title:"update ok"});
     });
 
 /* update-username page. */
