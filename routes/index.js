@@ -37,7 +37,6 @@ router.post(
         res.render('index', {title:"test ça"});
     });
 
-
 /* Signin page. */
 
     /* -- GET --*/
@@ -99,13 +98,17 @@ router.post(
             console.log(req.form.errors);
 
         } else {
+            console.log("id:", req.form.id);
             console.log("latitude:", req.form.latitude);
             console.log("longitude:", req.form.longitude);
-            // TODO update la position du user
-
-
+            var id=req.form.id;
+            var lat=req.form.latitude;
+            var long=req.form.longitude;
+            db.query('UPDATE users SET long = $1, lat = $2 WHERE id_user = $3', [long,lat,id],(err, datares) => {
+                if (err) throw err;
+                res.render('index', {title:"update ok"});
+            });
         }
-        res.render('index', {title:"update ok"});
     });
 
 /* update-username page. */
@@ -130,17 +133,22 @@ router.post(
         if (!req.form.isValid) {
             // Handle errors
             console.log(req.form.errors);
+            res.send(err);
 
         } else {
             // Or, use filtered form data from the form object:
             console.log("username:", req.form.username);
             console.log("latitude:", req.form.latitude);
             console.log("longitude:", req.form.longitude);
-            // TODO update la position du user
-
-
+            var longitude = req.form.longitude;
+            var latitude = req.form.latitude;
+            var username = req.form.username;
+            db.query('UPDATE users SET long = $1, lat = $2 WHERE username = $3', [longitude,latitude,username],(err, datares) => {
+                if (err) throw err;
+                res.render('index', {title:"update ok"});
+            });
         }
-        res.render('index', {title:"update ok"});
+
     });
 
 
@@ -155,9 +163,11 @@ router.get('/user',(req,res)=> {
         for (let row of datares.rows) {
             console.log(JSON.stringify(row));
             str = str + JSON.stringify(row);
+            res.write(JSON.stringify(row));
         }
+    res.send();
     });
-}
+})
 
 
 /*
